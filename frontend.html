@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Transit Ticket</title>
+  <style>
+    /* Fallback styles in case Tailwind fails to load */
+    body {
+      background-color: white;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      margin: 0;
+    }
+    .header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .zone-selector {
+      width: 100%;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+      transition: opacity 0.3s ease;
+    }
+    .zone-selector:hover {
+      opacity: 1;
+    }
+    .zone-selector select {
+      background-color: transparent;
+      border: none;
+      color: #4B5563;
+      font-size: 0.875rem;
+      padding: 0.25rem;
+      width: 100%;
+      cursor: pointer;
+    }
+    .zone-selector select:focus {
+      outline: none;
+    }
+    .logo-circle {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5rem;
+      margin-top: 5rem;
+      position: relative;
+      
+    }
+    .circle-border {
+      position: absolute;
+      width: 10rem;
+      height: 10rem;
+      border-radius: 50%;
+      border: 8px solid #092b76;
+      animation: breathe 1.5s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0% {
+        transform: scale(1);
+        border: 8px solid #092b76;
+      }
+      50% {
+        transform: scale(1.2);
+        border: 30px solid #092b76;
+      }
+      100% {
+        transform: scale(1);
+        border: 8px solid #092b76;
+      }
+    }
+    .clock {
+      font-size: 3.75rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .zone-label {
+      background-color: black;
+      color: white;
+      width: 100%;
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+    }
+    .ticket-card {
+      background-color: white;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid #e5e7eb;
+    }
+  </style>
+  <script>
+    function updateZone() {
+      const dropdown = document.getElementById('zoneSelect');
+      const selectedZone = dropdown.value;
+      document.getElementById('zoneLabel').innerText = selectedZone;
+      document.getElementById('ticketType').innerText = `Regular ${selectedZone} Single Ride`;
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      // Update clock
+      document.getElementById("clock").innerText = now.toLocaleTimeString();
+      
+      // Update expiration date (set to 1 hour from now)
+      const expirationDate = new Date(now);
+      expirationDate.setHours(expirationDate.getHours() + 1);
+      document.getElementById("expirationDate").innerText = 
+        `Expires ${expirationDate.toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric' 
+        })} at ${expirationDate.toLocaleTimeString('en-US', { 
+          hour: 'numeric',
+          minute: '2-digit' 
+        })}`;
+    }
+  </script>
+  <script>
+    // Update time and date every second
+    setInterval(updateDateTime, 1000);
+    // Initial update
+    updateDateTime();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white font-sans flex flex-col items-center p-4">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1 class="text-xl font-bold">Lincoln County Transit</h1>
+      <p class="text-sm text-gray-500">Show operator your ticket</p>
+    </div>
+    <button class="text-gray-500 text-2xl font-light">×</button>
+  </div>
+
+  <!-- Zone Selector -->
+  <div class="zone-selector">
+    <label for="zoneSelect" class="block mb-1 text-sm font-medium text-gray-400">Select Zone:</label>
+    <select id="zoneSelect" onchange="updateZone()" class="w-full p-2 rounded">
+      <option value="Zone1 -> Zone1">Zone1 → Zone1</option>
+      <option value="Zone1 -> Zone2">Zone1 → Zone2</option>
+      <option value="Zone1 -> Zone3">Zone1 → Zone3</option>
+      <option value="Zone1 -> Zone4">Zone1 → Zone4</option>
+      <option value="Zone1 -> Zone5">Zone1 → Zone5</option>
+      <option value="Zone1 -> Zone6">Zone1 → Zone6</option>
+      <option value="Zone2 -> Zone3">Zone2 → Zone3</option>
+      <option value="Zone2 -> Zone4">Zone2 → Zone4</option>
+      <option value="Zone2 -> Zone5">Zone2 → Zone5</option>
+      <option value="Zone2 -> Zone6">Zone2 → Zone6</option>
+      <option value="Zone3 -> Zone4">Zone3 → Zone4</option>
+      <option value="Zone3 -> Zone5">Zone3 → Zone5</option>
+      <option value="Zone3 -> Zone6">Zone3 → Zone6</option>
+      <option value="Zone4 -> Zone5">Zone4 → Zone5</option>
+      <option value="Zone4 -> Zone6">Zone4 → Zone6</option>
+      <option value="Zone5 -> Zone6">Zone5 → Zone6</option>
+    </select>
+  </div>
+
+  <!-- Logo Circle with Border -->
+  <div class="logo-circle">
+    <div class="circle-border"></div>
+    <img src="./photo/lincoln_county.png" alt="Logo" class="w-20 h-20 object-contain">
+  </div>
+
+  <!-- Clock -->
+  <div id="clock" class="clock">3:12:33 PM</div>
+
+  <!-- Zone Label -->
+  <div class="zone-label" id="zoneLabel">Zone1 → Zone1</div>
+
+  <!-- Ticket Info Card -->
+  <div class="ticket-card">
+    <h2 class="text-lg font-semibold" id="ticketType">Regular Zone1 → Zone1 Single Ride</h2>
+    <p class="text-sm text-gray-600">Lincoln County, OR</p>
+    <p class="text-sm text-gray-500 mt-2" id="expirationDate">Expires Jun 3, 2025 at 4:11 PM</p>
+  </div>
+
+</body>
+</html>
